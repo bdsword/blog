@@ -1,6 +1,8 @@
 title: Gtk DND Note
 date: 2014-09-19 11:39:35
-tags: Gtk DND
+tags:
+- Gtk
+- DND
 ---
 
 Gtk Drag and Drop Note
