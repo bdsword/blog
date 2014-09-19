@@ -38,7 +38,7 @@ highlight:
   enable: true
   line_number: true
   backtick_code_block: true
-  tab_replace:
+  # tab_replace:
 
 # Category & Tag
 default_category: uncategorized
@@ -80,7 +80,7 @@ disqus_shortname:
 # Extensions
 ## Plugins: https://github.com/hexojs/hexo/wiki/Plugins
 ## Themes: https://github.com/hexojs/hexo/wiki/Themes
-theme: pacman
+theme: pacman #landscape
 exclude_generator:
 
 # Deployment
@@ -88,3 +88,6 @@ exclude_generator:
 deploy:
   type: github
   repo: git@github.com:bdsword/blog.git
+
+stylus:
+  compress: true
