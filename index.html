@@ -67,239 +67,76 @@
     <div id="container">
       <div id="main">
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/09/28/Linux-NTFS-write-access/" title="Linux NTFS write access." itemprop="url">Linux NTFS write access.</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="https://plus.google.com/113744052319081900000?rel=author" title="BDSword" target="_blank" itemprop="author">BDSword</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-28T14:31:10.000Z" itemprop="datePublished"> 發表於 2014-09-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="Linux_NTFS_write_access"><a href="#Linux_NTFS_write_access" class="headerlink" title="Linux NTFS write access"></a>Linux NTFS write access</h1><blockquote>
-<p>壞人因畏懼而服從，好人因愛而服從 — 亞里士多德</p>
-</blockquote>
-<p>在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。</p>
-<p>在File Systems的部份，總是只勾選幾項重點項目：</p>
-<ol>
-<li>Ext系列是必備的</li>
-<li>JFS, XFS採用Module的方式</li>
-<li>DOS/FAT/NT Filesystems，則是除了NTFS debugging support都勾選了</li>
-</ol>
-<p>原本以為這樣就可以擁有NTFS的寫入存取，沒想到在一次使用 <a href="http://www.easy2boot.com/" target="_blank" rel="external">Easy2Boot</a> 軟體的時候，遇到了點障礙。用Easy2Boot製作好的隨身碟，想放入iso檔案，在Windows環境下沒問題，但在Funtoo底下，卻沒有對NTFS的寫入權，後來Google之後得知，需要安裝ntfs-3g軟件(不確定是否必要)，安裝之後發現Kernel沒有開啟必要的Fuse的功能，將該選項加入之後，重編核心，終於能順利寫入NTFS了。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
   
-  <span></span> <a href="/blog/tags/kernel/">kernel</a><a href="/blog/tags/linux/">linux</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/09/28/Linux-NTFS-write-access/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/09/24/Gtk-Container-Note/" title="Gtk Container Note" itemprop="url">Gtk Container Note</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="https://plus.google.com/113744052319081900000?rel=author" title="BDSword" target="_blank" itemprop="author">BDSword</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-24T15:22:25.000Z" itemprop="datePublished"> 發表於 2014-09-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="Gtk_Container_2C_Widget_Node"><a href="#Gtk_Container_2C_Widget_Node" class="headerlink" title="Gtk Container, Widget Node"></a>Gtk Container, Widget Node</h1><blockquote>
-<p>你若要喜愛你自己的價值，你就得給世界創造價值 - 歌德</p>
-</blockquote>
-<p>Gtk的Container有分成很多種，有些只能加入一個 Child ，有些能放入多個 Child(繼承自<a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Bin.html#Gtk.Bin" target="_blank" rel="external">Gtk.Bin</a>) ，有些放置 Child 只能依循 Columns, Rows (繼承自<a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Grid.html#Gtk.Grid" target="_blank" rel="external">Gtk.Grid</a>)，而少數能夠採用絕對座標(Static的Coordinate)來放置 Child Widget 的 Container(繼承自<a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Fixed.html#Gtk.Fixed" target="_blank" rel="external">Gtk.Fixed</a>)，目前找到的就只有：</p>
-<ol>
-<li><a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Layout.html#Gtk.Layout" target="_blank" rel="external">Gtk.Layout</a></li>
-<li><a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Fixed.html#Gtk.Fixed" target="_blank" rel="external">Gtk.Fixed</a></li>
-</ol>
-<p>但要注意，Layout繼承 Gtk.Scrollable 以及 Gtk.Fixed ，因此他才有絕對座標的放置法；而 Gtk.Fixed 並沒有繼承 Gtk.Scrollable ，因此如果希望內部的 Widget 能夠放超出 Container 的可視範圍(Viewport)，最好是採用Gtk.Layout，否則一旦內部的 Widget 放置的超出 Container 的範圍， Container會變大。</p>
-<p>附上範例程式碼：</p>
-<figure class="highlight python"><figcaption><span>dragBox.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gtk</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DragBox</span><span class="params">(Gtk.EventBox)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(DragBox, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_state</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.state</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><figcaption><span>dropArea.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gtk</span><br><span class="line"><span class="keyword">from</span> point <span class="keyword">import</span> Point</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DropArea</span><span class="params">(Gtk.Layout)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(DropArea, self).__init__()</span><br><span class="line">        self.press_point = <span class="keyword">None</span>  <span class="comment"># in drag-box's coordinate space</span></span><br><span class="line">        <span class="comment"># self.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)</span></span><br><span class="line">        <span class="comment"># self.set_events(Gdk.EventMask.BUTTON_RELEASE_MASK)</span></span><br><span class="line">        <span class="comment"># self.set_events(Gdk.EventMask.POINTER_MOTION_MASK)</span></span><br><span class="line">        <span class="comment"># self.connect('button-press-event', self.on_button_press)</span></span><br><span class="line">        <span class="comment"># self.connect('button-release-event', self.on_button_release)</span></span><br><span class="line">        <span class="comment"># self.connect('motion-notify-event', self.on_mouse_motion)</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_drag_box</span><span class="params">(self, drag_box, x, y)</span>:</span></span><br><span class="line">        self.put(drag_box, x, y)</span><br><span class="line">        drag_box.connect(<span class="string">'button-press-event'</span>, self.on_drag_box_button_press)</span><br><span class="line">        drag_box.connect(<span class="string">'button_release_event'</span>, self.on_drag_box_button_release)</span><br><span class="line">        drag_box.connect(<span class="string">'motion-notify-event'</span>, self.on_drag_box_mouse_motion)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_box_button_press</span><span class="params">(self, widget, event)</span>:</span></span><br><span class="line">        <span class="comment"># print('on drag box button press')</span></span><br><span class="line">        self.press_point = Point(event.x, event.y)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_box_button_release</span><span class="params">(self, widget, event)</span>:</span></span><br><span class="line">        <span class="comment"># print('on drag box button release')</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_box_mouse_motion</span><span class="params">(self, widget, event)</span>:</span></span><br><span class="line">        (x, y) = self.get_absolute_coord(widget, event.x, event.y)</span><br><span class="line">        self.move(widget, x-self.press_point.x, y-self.press_point.y)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_absolute_coord</span><span class="params">(self, widget, x, y)</span>:</span></span><br><span class="line">        allocation = widget.get_allocation()</span><br><span class="line">        <span class="keyword">return</span> x+allocation.x, y+allocation.y</span><br><span class="line"></span><br><span class="line">    <span class="comment">##########################################################</span></span><br><span class="line">    <span class="comment">#    This method is deprecated unless you want to        #</span></span><br><span class="line">    <span class="comment">#    forbidden widget from moving out of the container   #</span></span><br><span class="line">    <span class="comment">##########################################################</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">out_range_adjust</span><span class="params">(self, widget, x, y)</span>:</span></span><br><span class="line">        allocation = widget.get_allocation()</span><br><span class="line">        self_allocation = self.get_allocation()</span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">0</span>:</span><br><span class="line">            x = <span class="number">0</span></span><br><span class="line">        <span class="keyword">elif</span> x+allocation.width &gt; self_allocation.width:</span><br><span class="line">            x = self_allocation.width - allocation.width</span><br><span class="line">        <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">            y = <span class="number">0</span></span><br><span class="line">        <span class="keyword">elif</span> y+allocation.height &gt; self_allocation.height:</span><br><span class="line">            y = self_allocation.height - allocation.height</span><br><span class="line">        <span class="keyword">return</span> x, y</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><figcaption><span>testDropArea.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dragBox</span><br><span class="line"><span class="keyword">import</span> dropArea</span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gtk</span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gdk</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestWindow</span><span class="params">(Gtk.Window)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(TestWindow, self).__init__(title=<span class="string">"TestWindow"</span>)</span><br><span class="line">        self.drop_area = dropArea.DropArea()</span><br><span class="line">        self.drop_area.set_size(<span class="number">450</span>, <span class="number">450</span>)</span><br><span class="line">        self.drop_area.set_size_request(<span class="number">450</span>, <span class="number">450</span>)</span><br><span class="line">        self.drop_area.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(<span class="number">0</span>, <span class="number">0.3</span>, <span class="number">0.5</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">        self.fixed = Gtk.Fixed()</span><br><span class="line">        self.fixed.put(self.drop_area, <span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">        self.add(self.fixed)</span><br><span class="line"></span><br><span class="line">        drag_box = dragBox.DragBox()</span><br><span class="line">        drag_box.set_size_request(<span class="number">200</span>, <span class="number">200</span>)</span><br><span class="line">        drag_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0.5</span>))</span><br><span class="line">        self.drop_area.add_drag_box(drag_box, <span class="number">100</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">test_window = TestWindow()</span><br><span class="line">test_window.set_size_request(<span class="number">640</span>, <span class="number">640</span>)</span><br><span class="line">test_window.connect(<span class="string">'delete-event'</span>, Gtk.main_quit)</span><br><span class="line">test_window.show_all()</span><br><span class="line">Gtk.main()</span><br></pre></td></tr></table></figure>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/blog/tags/Container/">Container</a><a href="/blog/tags/Gtk/">Gtk</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/09/24/Gtk-Container-Note/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/09/19/Gtk-DND-Note/" title="Gtk DND Note" itemprop="url">Gtk DND Note</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="https://plus.google.com/113744052319081900000?rel=author" title="BDSword" target="_blank" itemprop="author">BDSword</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-19T03:39:35.000Z" itemprop="datePublished"> 發表於 2014-09-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="Gtk_Drag_and_Drop_Note"><a href="#Gtk_Drag_and_Drop_Note" class="headerlink" title="Gtk Drag and Drop Note"></a>Gtk Drag and Drop Note</h1><blockquote>
-<p>一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰</p>
-</blockquote>
-<p>因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…</p>
-<p>Gtk的Drag and Drop(DND)分成兩個角色：</p>
-<ul>
-<li>Source： 也就是DND事件發生時，被拖著移動的那個物件</li>
-<li>Dest： 是Drop事件發生處。</li>
-</ul>
-<p>Gtk的DND事件發生過程中會觸發數個事件/訊號(Signal)：</p>
-<ol>
-<li>Drag開始，Source獲得 <strong>drag-begin</strong> 訊號，可以用來作一些Drag發生之前的設定，例如設定drag icon等等(使用 _drag_source_set<em>icon</em> 相關函數)。</li>
-<li>拖移Source的過程中，Dest獲得 <strong>drag-motion</strong> 訊號。</li>
-<li>如果拖移過程中，拖出了Dest的範圍，則Dest獲得 <strong>drag-leave</strong>訊號。</li>
-<li>Drop發生，Dest獲得 <strong>drag-drop</strong> 訊號。<br>此時會發生drag的data request，有點像是Dest向被拖移的Source要求一些data，才知道是什麼資料被拖移了、該如何處理等等。</li>
-<li>Drag的data request，Source獲得 <strong>drag-data-get</strong> 訊號。</li>
-<li>Drop的data received（有可能發生另一個程式身上），如果發生 <strong>drag-data-get</strong> 訊號時，callback的selection_data參數有被加入、設定資料，Dest會獲得 <strong>drag-data-received</strong> 訊號。</li>
-<li>Drag準備結束，Dest在drag-data-received的handler有責任呼叫Gtk.drag_finish來決定drag事件是否成功，由第三個參數決定Source是否需要刪除Data，如果是的話，Source獲得 <strong>drag-data-delete</strong> 訊號。（但測試結果好像不需要手動呼叫Gtk.drag_finish，只要使用Gdk.DragAction.MOVE，就會觸發drag-data-delete訊號）</li>
-<li>Drag結束，Source獲得 <strong>drag-end</strong> 訊號。</li>
-</ol>
-<p>介紹完了整體流程，仍然有許多細節在使用pygobject實作時得注意，以下介紹實作時的流程：</p>
-<ul>
-<li>分別對Source Widget呼叫 <strong>drag_source_set</strong> 方法，Dest Widget呼叫 <strong>drag_dest_set</strong> 方法。</li>
-</ul>
-<blockquote>
-<p><strong>drag_source_set</strong> 方法讓Widget可以接受拖曳。 <strong>drag_dest_set</strong> 方法則讓Widget可以接受Drag物件的放置。</p>
-<p><strong>drag_source_set(start_button_mask, targets, actions)</strong></p>
-<blockquote>
-<p><strong>start_button_mask</strong> ：Gdk.ModifierType型態的常數，我把他看成可以觸發DND事件的按鍵。常用 Gdk.ModifierType.BUTTON1_MASK</p>
-<p><strong>targets</strong> ：一個Table，裡面儲存著這個Widget support的類型（一些識別類型用的常數），可以視為此Widget是哪種類型的Drag Source，DND的dest也必須設定成能夠接受此種類型的Souce，否則Dest將無法接受該Source的Drop。</p>
-<p><strong>actions</strong> ：Gdk.DragAction型態的常數，設定此Widget DND事件類型。常用Gdk.DragAction.MOVE、Gdk.DragAction.COPY</p>
-</blockquote>
-<p><strong>drag_dest_set</strong> 方法與上述類似，詳情參考 <a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Widget.html#Gtk.Widget.drag_dest_set" target="_blank" rel="external">Pygobjec API文件</a></p>
-<p>值得一提的是，兩個方法的targets參數，可以在事後指定 - 使用 <strong>drag_dest_set_target_list</strong> 方法設定targets table，或者使用 <strong>drag_source<em>add</em>*_targets</strong> 方法設定擁有預設值的targets。</p>
-</blockquote>
-<ul>
-<li><p>將需要處理的訊號透過connect連結到widget上面。</p>
-</li>
-<li><p>如果有需要，透過前述的方法將targets加到widget的targets list裡面。</p>
-</li>
-</ul>
-<p>附上測試用的程式碼（使用Python 3.4）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gtk</span><br><span class="line"><span class="keyword">from</span> BDLibrary <span class="keyword">import</span> bdshorthands</span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gdk</span><br><span class="line"></span><br><span class="line">TARGET_ENTRY_PIXBUF = <span class="number">10</span></span><br><span class="line">TARGET_ENTRY_TEXT = <span class="number">11</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyWindow</span><span class="params">(Gtk.Window)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        Gtk.Window.__init__(self, title=<span class="string">"TestDrag"</span>)</span><br><span class="line"></span><br><span class="line">        self.layout = Gtk.Layout()</span><br><span class="line">        self.add(self.layout)</span><br><span class="line"></span><br><span class="line">        self.image_box = Gtk.EventBox.new()</span><br><span class="line">        self.image_box.add(bdshorthands.generate_image(<span class="string">'winnie.jpg'</span>))</span><br><span class="line">        self.image_box.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-begin'</span>, self.on_drag_begin)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-data-delete'</span>, self.on_drag_data_delete)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-end'</span>, self.on_drag_end)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-data-get'</span>, self.on_drag_data_get)</span><br><span class="line">        self.layout.put(self.image_box, <span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        self.layout.modify_bg( Gtk.StateType.NORMAL, Gdk.Color.from_floats(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>) ) <span class="comment">#修改Drop area背景顏色</span></span><br><span class="line">        self.layout.drag_dest_set( Gtk.DestDefaults.ALL, [], Gdk.DragAction.MOVE )</span><br><span class="line">        self.layout.connect(<span class="string">'drag-drop'</span>, self.on_drag_drop)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-data-received'</span>, self.on_drop_data_received)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-leave'</span>, self.on_drag_leave)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-motion'</span>, self.on_drag_motion)</span><br><span class="line"></span><br><span class="line">        targets = Gtk.TargetList.new([])</span><br><span class="line">        targets.add_text_targets(TARGET_ENTRY_TEXT) <span class="comment"># 要注意target的類型是Pixbuf還是Text否則Data在填充之後，drag-data-received仍不會被觸發</span></span><br><span class="line"></span><br><span class="line">        self.image_box.drag_source_set_target_list(targets)</span><br><span class="line">        self.layout.drag_dest_set_target_list(targets)</span><br><span class="line">        <span class="comment"># self.image_box.drag_source_add_image_targets() # 也可以使用這個方法Append support的target，不過這樣的話target的info將會是預設的0</span></span><br><span class="line">        <span class="comment"># self.drag_dest_add_image_targets() # 也可以使用這個方法Append support的target，不過這樣的話target的info將會是預設的0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_begin</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag begin'</span>)</span><br><span class="line">        widget.set_opacity(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_motion</span><span class="params">(self, widget, context, x, y, time)</span>:</span></span><br><span class="line">        <span class="comment"># print('On drag motion')</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_drop</span><span class="params">(self, widget, context, x, y, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag drop'</span>)</span><br><span class="line">        <span class="comment"># print(context.get_source_window())</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_leave</span><span class="params">(self, widget, context, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag leave'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_data_delete</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag data delete'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_end</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag end'</span>)</span><br><span class="line">        widget.set_opacity(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_data_get</span><span class="params">(self, widget, drag_context, data, info, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag data get!'</span>)</span><br><span class="line">        data.set_text(<span class="string">'Hello World!'</span>, -<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drop_data_received</span><span class="params">(self, widget, drag_context, x, y, data, info, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drop data received!'</span>)</span><br><span class="line">        self.layout.move(self.image_box, x, y)</span><br><span class="line">        <span class="comment"># delete_or_not = (drag_context.get_selected_action() == Gdk.DragAction.MOVE)</span></span><br><span class="line">        <span class="comment"># Gtk.drag_finish(drag_context, False, delete_or_not, time) # 實測結果不需要手動呼叫此函數</span></span><br><span class="line"></span><br><span class="line">my_window = MyWindow()</span><br><span class="line">my_window.connect(<span class="string">'delete-event'</span>, Gtk.main_quit)</span><br><span class="line">my_window.set_size_request(<span class="number">640</span>, <span class="number">480</span>)</span><br><span class="line">my_window.show_all()</span><br><span class="line">Gtk.main()</span><br></pre></td></tr></table></figure>
-<h2 id="u53C3_u8003_uFF1A"><a href="#u53C3_u8003_uFF1A" class="headerlink" title="參考："></a>參考：</h2><p><a href="https://wiki.gnome.org/GnomeLove/DragNDropTutorial" target="_blank" rel="external">https://wiki.gnome.org/GnomeLove/DragNDropTutorial</a><br><a href="http://www.pygtk.org/pygtk2tutorial/ch-DragAndDrop.html" target="_blank" rel="external">http://www.pygtk.org/pygtk2tutorial/ch-DragAndDrop.html</a><br><a href="http://python-gtk-3-tutorial.readthedocs.org/en/latest/drag_and_drop.html" target="_blank" rel="external">http://python-gtk-3-tutorial.readthedocs.org/en/latest/drag_and_drop.html</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
+    <a href="/blog/2014/09/28/Linux-NTFS-write-access/" title="Linux NTFS write access." itemprop="url">
   
-  <span></span> <a href="/blog/tags/DND/">DND</a><a href="/blog/tags/Gtk/">Gtk</a>
-  </div>
+    <h1 itemprop="name">Linux NTFS write access.</h1>
+    
+     
+           <p itemprop="description" >Linux NTFS write access
+壞人因畏懼而服從，好人因愛而服從 — 亞里士多德
 
-</div>
+在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。
+在File Systems的部份，總是只勾選幾項重點項目：
+
+Ext系列是必備的
+JFS, XFS採用</p>
+        
+    
+    <time datetime="2014-09-28T14:31:10.000Z" itemprop="datePublished">2014-09-28</time>
+  </a>
+</section>
 
 
 
 
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/09/19/Gtk-DND-Note/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
 
 
-    </article>
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/blog/2014/09/24/Gtk-Container-Note/" title="Gtk Container Note" itemprop="url">
+  
+    <h1 itemprop="name">Gtk Container Note</h1>
+    
+     
+           <p itemprop="description" >Gtk Container, Widget Node
+你若要喜愛你自己的價值，你就得給世界創造價值 - 歌德
+
+Gtk的Container有分成很多種，有些只能加入一個 Child ，有些能放入多個 Child(繼承自Gtk.Bin) ，有些放置 Child 只能依循 Colum</p>
+        
+    
+    <time datetime="2014-09-24T15:22:25.000Z" itemprop="datePublished">2014-09-24</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/blog/2014/09/19/Gtk-DND-Note/" title="Gtk DND Note" itemprop="url">
+  
+    <h1 itemprop="name">Gtk DND Note</h1>
+    
+     
+           <p itemprop="description" >Gtk Drag and Drop Note
+一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰
+
+因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…
+Gtk的Drag and Drop(DND)分成兩個角色：
+
+</p>
+        
+    
+    <time datetime="2014-09-19T03:39:35.000Z" itemprop="datePublished">2014-09-19</time>
+  </a>
+</section>
 
 
 
