@@ -1,0 +1,536 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Gtk DND Note | BDSword&#39;s Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="BDSword">
+    
+
+    
+    <meta name="description" content="Gtk Drag and Drop Note
+一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰
+
+因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…
+Gtk的Drag and Drop(DND)分成兩個角色：
+
+Source： 也就是DND事件發生時，被拖著移動的那個物件
+Dest： 是Drop事件發生處。
+
+Gtk的DND事件發">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gtk DND Note">
+<meta property="og:url" content="https://bdsword.github.io/2014/09/19/Gtk-DND-Note/index.html">
+<meta property="og:site_name" content="BDSword's Notes">
+<meta property="og:description" content="Gtk Drag and Drop Note
+一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰
+
+因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…
+Gtk的Drag and Drop(DND)分成兩個角色：
+
+Source： 也就是DND事件發生時，被拖著移動的那個物件
+Dest： 是Drop事件發生處。
+
+Gtk的DND事件發">
+<meta property="og:updated_time" content="2015-12-24T17:05:33.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gtk DND Note">
+<meta name="twitter:description" content="Gtk Drag and Drop Note
+一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰
+
+因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…
+Gtk的Drag and Drop(DND)分成兩個角色：
+
+Source： 也就是DND事件發生時，被拖著移動的那個物件
+Dest： 是Drop事件發生處。
+
+Gtk的DND事件發">
+
+    
+    <link rel="alternative" href="/atom.xml" title="BDSword&#39;s Notes" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/blog/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/blog/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/blog/"><img src="/blog/img/logo.png" alt="BDSword&#39;s Notes" title="BDSword&#39;s Notes"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/blog/" title="BDSword&#39;s Notes">BDSword&#39;s Notes</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/blog/">Home</a></li>
+					
+						<li><a href="/blog/archives">Archives</a></li>
+					
+						<li><a href="/blog/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:bdsword.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/09/19/Gtk-DND-Note/" title="Gtk DND Note" itemprop="url">Gtk DND Note</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="BDSword" target="_blank" itemprop="author">BDSword</a>
+		
+  <p class="article-time">
+    <time datetime="2014-09-19T03:39:35.000Z" itemprop="datePublished"> 發表於 2014-09-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gtk_Drag_and_Drop_Note"><span class="toc-number">1.</span> <span class="toc-text">Gtk Drag and Drop Note</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C3_u8003_uFF1A"><span class="toc-number">1.1.</span> <span class="toc-text">參考：</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Gtk_Drag_and_Drop_Note"><a href="#Gtk_Drag_and_Drop_Note" class="headerlink" title="Gtk Drag and Drop Note"></a>Gtk Drag and Drop Note</h1><blockquote>
+<p>一個誠摯、熱心，為著光明而鬥爭的人，不能夠不是刻苦而負責的 - 列夫·托爾斯泰</p>
+</blockquote>
+<p>因為研究pygobject遇到一點障礙，所以馬上把DND的一點心得寫下來…以免以後忘記…</p>
+<p>Gtk的Drag and Drop(DND)分成兩個角色：</p>
+<ul>
+<li>Source： 也就是DND事件發生時，被拖著移動的那個物件</li>
+<li>Dest： 是Drop事件發生處。</li>
+</ul>
+<p>Gtk的DND事件發生過程中會觸發數個事件/訊號(Signal)：</p>
+<ol>
+<li>Drag開始，Source獲得 <strong>drag-begin</strong> 訊號，可以用來作一些Drag發生之前的設定，例如設定drag icon等等(使用 _drag_source_set<em>icon</em> 相關函數)。</li>
+<li>拖移Source的過程中，Dest獲得 <strong>drag-motion</strong> 訊號。</li>
+<li>如果拖移過程中，拖出了Dest的範圍，則Dest獲得 <strong>drag-leave</strong>訊號。</li>
+<li>Drop發生，Dest獲得 <strong>drag-drop</strong> 訊號。<br>此時會發生drag的data request，有點像是Dest向被拖移的Source要求一些data，才知道是什麼資料被拖移了、該如何處理等等。</li>
+<li>Drag的data request，Source獲得 <strong>drag-data-get</strong> 訊號。</li>
+<li>Drop的data received（有可能發生另一個程式身上），如果發生 <strong>drag-data-get</strong> 訊號時，callback的selection_data參數有被加入、設定資料，Dest會獲得 <strong>drag-data-received</strong> 訊號。</li>
+<li>Drag準備結束，Dest在drag-data-received的handler有責任呼叫Gtk.drag_finish來決定drag事件是否成功，由第三個參數決定Source是否需要刪除Data，如果是的話，Source獲得 <strong>drag-data-delete</strong> 訊號。（但測試結果好像不需要手動呼叫Gtk.drag_finish，只要使用Gdk.DragAction.MOVE，就會觸發drag-data-delete訊號）</li>
+<li>Drag結束，Source獲得 <strong>drag-end</strong> 訊號。</li>
+</ol>
+<p>介紹完了整體流程，仍然有許多細節在使用pygobject實作時得注意，以下介紹實作時的流程：</p>
+<ul>
+<li>分別對Source Widget呼叫 <strong>drag_source_set</strong> 方法，Dest Widget呼叫 <strong>drag_dest_set</strong> 方法。</li>
+</ul>
+<blockquote>
+<p><strong>drag_source_set</strong> 方法讓Widget可以接受拖曳。 <strong>drag_dest_set</strong> 方法則讓Widget可以接受Drag物件的放置。</p>
+<p><strong>drag_source_set(start_button_mask, targets, actions)</strong></p>
+<blockquote>
+<p><strong>start_button_mask</strong> ：Gdk.ModifierType型態的常數，我把他看成可以觸發DND事件的按鍵。常用 Gdk.ModifierType.BUTTON1_MASK</p>
+<p><strong>targets</strong> ：一個Table，裡面儲存著這個Widget support的類型（一些識別類型用的常數），可以視為此Widget是哪種類型的Drag Source，DND的dest也必須設定成能夠接受此種類型的Souce，否則Dest將無法接受該Source的Drop。</p>
+<p><strong>actions</strong> ：Gdk.DragAction型態的常數，設定此Widget DND事件類型。常用Gdk.DragAction.MOVE、Gdk.DragAction.COPY</p>
+</blockquote>
+<p><strong>drag_dest_set</strong> 方法與上述類似，詳情參考 <a href="http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/Widget.html#Gtk.Widget.drag_dest_set" target="_blank" rel="external">Pygobjec API文件</a></p>
+<p>值得一提的是，兩個方法的targets參數，可以在事後指定 - 使用 <strong>drag_dest_set_target_list</strong> 方法設定targets table，或者使用 <strong>drag_source<em>add</em>*_targets</strong> 方法設定擁有預設值的targets。</p>
+</blockquote>
+<ul>
+<li><p>將需要處理的訊號透過connect連結到widget上面。</p>
+</li>
+<li><p>如果有需要，透過前述的方法將targets加到widget的targets list裡面。</p>
+</li>
+</ul>
+<p>附上測試用的程式碼（使用Python 3.4）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gtk</span><br><span class="line"><span class="keyword">from</span> BDLibrary <span class="keyword">import</span> bdshorthands</span><br><span class="line"><span class="keyword">from</span> gi.repository <span class="keyword">import</span> Gdk</span><br><span class="line"></span><br><span class="line">TARGET_ENTRY_PIXBUF = <span class="number">10</span></span><br><span class="line">TARGET_ENTRY_TEXT = <span class="number">11</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyWindow</span><span class="params">(Gtk.Window)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        Gtk.Window.__init__(self, title=<span class="string">"TestDrag"</span>)</span><br><span class="line"></span><br><span class="line">        self.layout = Gtk.Layout()</span><br><span class="line">        self.add(self.layout)</span><br><span class="line"></span><br><span class="line">        self.image_box = Gtk.EventBox.new()</span><br><span class="line">        self.image_box.add(bdshorthands.generate_image(<span class="string">'winnie.jpg'</span>))</span><br><span class="line">        self.image_box.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-begin'</span>, self.on_drag_begin)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-data-delete'</span>, self.on_drag_data_delete)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-end'</span>, self.on_drag_end)</span><br><span class="line">        self.image_box.connect(<span class="string">'drag-data-get'</span>, self.on_drag_data_get)</span><br><span class="line">        self.layout.put(self.image_box, <span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        self.layout.modify_bg( Gtk.StateType.NORMAL, Gdk.Color.from_floats(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>) ) <span class="comment">#修改Drop area背景顏色</span></span><br><span class="line">        self.layout.drag_dest_set( Gtk.DestDefaults.ALL, [], Gdk.DragAction.MOVE )</span><br><span class="line">        self.layout.connect(<span class="string">'drag-drop'</span>, self.on_drag_drop)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-data-received'</span>, self.on_drop_data_received)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-leave'</span>, self.on_drag_leave)</span><br><span class="line">        self.layout.connect(<span class="string">'drag-motion'</span>, self.on_drag_motion)</span><br><span class="line"></span><br><span class="line">        targets = Gtk.TargetList.new([])</span><br><span class="line">        targets.add_text_targets(TARGET_ENTRY_TEXT) <span class="comment"># 要注意target的類型是Pixbuf還是Text否則Data在填充之後，drag-data-received仍不會被觸發</span></span><br><span class="line"></span><br><span class="line">        self.image_box.drag_source_set_target_list(targets)</span><br><span class="line">        self.layout.drag_dest_set_target_list(targets)</span><br><span class="line">        <span class="comment"># self.image_box.drag_source_add_image_targets() # 也可以使用這個方法Append support的target，不過這樣的話target的info將會是預設的0</span></span><br><span class="line">        <span class="comment"># self.drag_dest_add_image_targets() # 也可以使用這個方法Append support的target，不過這樣的話target的info將會是預設的0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_begin</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag begin'</span>)</span><br><span class="line">        widget.set_opacity(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_motion</span><span class="params">(self, widget, context, x, y, time)</span>:</span></span><br><span class="line">        <span class="comment"># print('On drag motion')</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_drop</span><span class="params">(self, widget, context, x, y, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag drop'</span>)</span><br><span class="line">        <span class="comment"># print(context.get_source_window())</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_leave</span><span class="params">(self, widget, context, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag leave'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_data_delete</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag data delete'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_end</span><span class="params">(self, widget, context)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag end'</span>)</span><br><span class="line">        widget.set_opacity(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drag_data_get</span><span class="params">(self, widget, drag_context, data, info, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drag data get!'</span>)</span><br><span class="line">        data.set_text(<span class="string">'Hello World!'</span>, -<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_drop_data_received</span><span class="params">(self, widget, drag_context, x, y, data, info, time)</span>:</span></span><br><span class="line">        print(<span class="string">'On drop data received!'</span>)</span><br><span class="line">        self.layout.move(self.image_box, x, y)</span><br><span class="line">        <span class="comment"># delete_or_not = (drag_context.get_selected_action() == Gdk.DragAction.MOVE)</span></span><br><span class="line">        <span class="comment"># Gtk.drag_finish(drag_context, False, delete_or_not, time) # 實測結果不需要手動呼叫此函數</span></span><br><span class="line"></span><br><span class="line">my_window = MyWindow()</span><br><span class="line">my_window.connect(<span class="string">'delete-event'</span>, Gtk.main_quit)</span><br><span class="line">my_window.set_size_request(<span class="number">640</span>, <span class="number">480</span>)</span><br><span class="line">my_window.show_all()</span><br><span class="line">Gtk.main()</span><br></pre></td></tr></table></figure>
+<h2 id="u53C3_u8003_uFF1A"><a href="#u53C3_u8003_uFF1A" class="headerlink" title="參考："></a>參考：</h2><p><a href="https://wiki.gnome.org/GnomeLove/DragNDropTutorial" target="_blank" rel="external">https://wiki.gnome.org/GnomeLove/DragNDropTutorial</a><br><a href="http://www.pygtk.org/pygtk2tutorial/ch-DragAndDrop.html" target="_blank" rel="external">http://www.pygtk.org/pygtk2tutorial/ch-DragAndDrop.html</a><br><a href="http://python-gtk-3-tutorial.readthedocs.org/en/latest/drag_and_drop.html" target="_blank" rel="external">http://python-gtk-3-tutorial.readthedocs.org/en/latest/drag_and_drop.html</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/DND/">DND</a><a href="/blog/tags/Gtk/">Gtk</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://bdsword.github.io/2014/09/19/Gtk-DND-Note/" data-title="Gtk DND Note | BDSword&#39;s Notes" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/09/24/Gtk-Container-Note/" title="Gtk Container Note">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Gtk Container Note</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gtk_Drag_and_Drop_Note"><span class="toc-number">1.</span> <span class="toc-text">Gtk Drag and Drop Note</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C3_u8003_uFF1A"><span class="toc-number">1.1.</span> <span class="toc-text">參考：</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/Gtk/" title="Gtk">Gtk<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/Container/" title="Container">Container<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/kernel/" title="kernel">kernel<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/DND/" title="DND">DND<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/blog/about" target="_blank" title="BDSword">BDSword</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/blog/js/jquery-2.0.3.min.js"></script>
+<script src="/blog/js/jquery.imagesloaded.min.js"></script>
+<script src="/blog/js/gallery.js"></script>
+<script src="/blog/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/blog/img/scrollup.png"/></a>
+	</div>
+	<script src="/blog/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
