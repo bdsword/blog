@@ -4,47 +4,38 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Linux NTFS write access. | BDSword&#39;s Notes</title>
+    <title>Linux-Kernel-Note | BDSword&#39;s Notes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="BDSword">
     
 
     
-    <meta name="description" content="Linux NTFS write access
-壞人因畏懼而服從，好人因愛而服從 — 亞里士多德
+    <meta name="description" content="Linux Kernel Trace Notes
+這邊紀錄一些 Linux Kernel 課程研讀中的筆記
 
-在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。
-在File Systems的部份，總是只勾選幾項重點項目：
-
-Ext系列是必備的
-JFS, XFS採用Module的方式
-DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
+MMU
+pgd_none 與 pgd_present 是兩個剛好相反意思的 function
+pte_offset_kernel 僅用於 Kernel Space 的 Page 查找(是否意謂User Space有自己的分頁表位於HIGHMEM Zone中？！)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux NTFS write access.">
-<meta property="og:url" content="https://bdsword.github.io/2014/09/28/Linux-NTFS-write-access/index.html">
+<meta property="og:title" content="Linux-Kernel-Note">
+<meta property="og:url" content="https://bdsword.github.io/2015/12/25/Linux-Kernel-Note/index.html">
 <meta property="og:site_name" content="BDSword's Notes">
-<meta property="og:description" content="Linux NTFS write access
-壞人因畏懼而服從，好人因愛而服從 — 亞里士多德
+<meta property="og:description" content="Linux Kernel Trace Notes
+這邊紀錄一些 Linux Kernel 課程研讀中的筆記
 
-在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。
-在File Systems的部份，總是只勾選幾項重點項目：
-
-Ext系列是必備的
-JFS, XFS採用Module的方式
-DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
-<meta property="og:updated_time" content="2015-12-24T17:05:33.558Z">
+MMU
+pgd_none 與 pgd_present 是兩個剛好相反意思的 function
+pte_offset_kernel 僅用於 Kernel Space 的 Page 查找(是否意謂User Space有自己的分頁表位於HIGHMEM Zone中？！)">
+<meta property="og:updated_time" content="2015-12-25T03:30:25.912Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux NTFS write access.">
-<meta name="twitter:description" content="Linux NTFS write access
-壞人因畏懼而服從，好人因愛而服從 — 亞里士多德
+<meta name="twitter:title" content="Linux-Kernel-Note">
+<meta name="twitter:description" content="Linux Kernel Trace Notes
+這邊紀錄一些 Linux Kernel 課程研讀中的筆記
 
-在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。
-在File Systems的部份，總是只勾選幾項重點項目：
-
-Ext系列是必備的
-JFS, XFS採用Module的方式
-DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
+MMU
+pgd_none 與 pgd_present 是兩個剛好相反意思的 function
+pte_offset_kernel 僅用於 Kernel Space 的 Page 查找(是否意謂User Space有自己的分頁表位於HIGHMEM Zone中？！)">
 <link rel="publisher" href="113744052319081900000">
 
     
@@ -96,14 +87,14 @@ DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/blog/2014/09/28/Linux-NTFS-write-access/" title="Linux NTFS write access." itemprop="url">Linux NTFS write access.</a>
+      <a href="/blog/2015/12/25/Linux-Kernel-Note/" title="Linux-Kernel-Note" itemprop="url">Linux-Kernel-Note</a>
   </h1>
   <p class="article-author">By
        
 		<a href="https://plus.google.com/113744052319081900000?rel=author" title="BDSword" target="_blank" itemprop="author">BDSword</a>
 		
   <p class="article-time">
-    <time datetime="2014-09-28T14:31:10.000Z" itemprop="datePublished"> 發表於 2014-09-28</time>
+    <time datetime="2015-12-25T03:23:36.000Z" itemprop="datePublished"> 發表於 2015-12-25</time>
     
   </p>
 </header>
@@ -112,21 +103,17 @@ DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux_NTFS_write_access"><span class="toc-number">1.</span> <span class="toc-text">Linux NTFS write access</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux_Kernel_Trace_Notes"><span class="toc-number">1.</span> <span class="toc-text">Linux Kernel Trace Notes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MMU"><span class="toc-number">1.1.</span> <span class="toc-text">MMU</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<h1 id="Linux_NTFS_write_access"><a href="#Linux_NTFS_write_access" class="headerlink" title="Linux NTFS write access"></a>Linux NTFS write access</h1><blockquote>
-<p>壞人因畏懼而服從，好人因愛而服從 — 亞里士多德</p>
+		<h1 id="Linux_Kernel_Trace_Notes"><a href="#Linux_Kernel_Trace_Notes" class="headerlink" title="Linux Kernel Trace Notes"></a>Linux Kernel Trace Notes</h1><blockquote>
+<p>這邊紀錄一些 Linux Kernel 課程研讀中的筆記</p>
 </blockquote>
-<p>在使用Funtoo Linux的時候，喜歡採用自己調整、編譯的Kernel。</p>
-<p>在File Systems的部份，總是只勾選幾項重點項目：</p>
-<ol>
-<li>Ext系列是必備的</li>
-<li>JFS, XFS採用Module的方式</li>
-<li>DOS/FAT/NT Filesystems，則是除了NTFS debugging support都勾選了</li>
+<h2 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h2><ol>
+<li><strong>pgd_none</strong> 與 <strong>pgd_present</strong> 是兩個剛好相反意思的 function</li>
+<li><strong>pte_offset_kernel</strong> 僅用於 Kernel Space 的 Page 查找(是否意謂User Space有自己的分頁表位於HIGHMEM Zone中？！)</li>
 </ol>
-<p>原本以為這樣就可以擁有NTFS的寫入存取，沒想到在一次使用 <a href="http://www.easy2boot.com/" target="_blank" rel="external">Easy2Boot</a> 軟體的時候，遇到了點障礙。用Easy2Boot製作好的隨身碟，想放入iso檔案，在Windows環境下沒問題，但在Funtoo底下，卻沒有對NTFS的寫入權，後來Google之後得知，需要安裝ntfs-3g軟件(不確定是否必要)，安裝之後發現Kernel沒有開啟必要的Fuse的功能，將該選項加入之後，重編核心，終於能順利寫入NTFS了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -144,7 +131,7 @@ DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://bdsword.github.io/2014/09/28/Linux-NTFS-write-access/" data-title="Linux NTFS write access. | BDSword&#39;s Notes" data-tsina="undefined" class="share clearfix">
+	  <div data-url="https://bdsword.github.io/2015/12/25/Linux-Kernel-Note/" data-title="Linux-Kernel-Note | BDSword&#39;s Notes" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -157,19 +144,11 @@ DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/blog/2015/12/25/Linux-Kernel-Note/" title="Linux-Kernel-Note">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Linux-Kernel-Note</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/blog/2014/09/24/Gtk-Container-Note/"  title="Gtk Container Note">
+<a href="/blog/2014/09/28/Linux-NTFS-write-access/"  title="Linux NTFS write access.">
  <strong>下一篇：</strong><br/> 
- <span>Gtk Container Note
+ <span>Linux NTFS write access.
 </span>
 </a>
 </div>
@@ -190,7 +169,7 @@ DOS/FAT/NT Filesystems，則是除了NTFS debugging support都">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux_NTFS_write_access"><span class="toc-number">1.</span> <span class="toc-text">Linux NTFS write access</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux_Kernel_Trace_Notes"><span class="toc-number">1.</span> <span class="toc-text">Linux Kernel Trace Notes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MMU"><span class="toc-number">1.1.</span> <span class="toc-text">MMU</span></a></li></ol></li></ol>
  
   </div>
 
